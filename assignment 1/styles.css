@@ -1,0 +1,137 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+}
+
+.sidebar {
+    width: 15%;
+    height: 100%;
+    background-color: #1E1E1E;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: fixed;
+}
+
+.main {
+    flex-grow: 1;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    margin-left: 15%;
+    display: block;
+    background-color: white;
+}
+
+.logo img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 40px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.menu li {
+    width: 100%;
+}
+
+.menu a {
+    display: block;
+    padding: 15px 20px;
+    color: #FFF;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.menu a:hover {
+    background-color: #333;
+}
+
+.settings {
+    margin-top: auto;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.settings a {
+    display: block;
+    padding: 15px 20px;
+    color: #FFF;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.settings a:hover {
+    background-color: #333;
+}
+
+
+.top_bar {
+    height: 15%;
+    padding-left: 2%;
+    font-size: large;
+}
+
+.content {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    display: block;
+    margin: auto;
+    background-color: white;
+    width: calc(100% - 250px);
+}
+
+.swap-container {
+    margin: auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+.swap-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.input-group select,
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.swap-button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.swap-button:hover {
+    background-color: #0056b3;
+}
+

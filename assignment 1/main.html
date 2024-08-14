@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meta Swap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="./portfolio.svg" style="width: 100%; height:auto;">
+        </div>
+        <ul class="menu">
+            <li><a href="https://portfolio.metamask.io/">Overview</a></li>
+            <li><a href="#portfolio">Move Crypto</a></li>
+            <li><a href="https://portfolio.metamask.io/explore/tokens">Tokens</a></li>
+            <li><a href="https://portfolio.metamask.io/explore/nfts">NFTs</a></li>
+            <li><a href="https://portfolio.metamask.io/games">Games</a></li>
+        </ul>
+        <div class="settings">
+            <a href="#settings">Settings</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="top_bar">
+            <h1>Swap</h1>
+        </div>
+        <div class="content">
+            <div class="swap-container">
+                <h2>Crypto Swap</h2>
+                <div class="input-group">
+                    <label for="from-token">From</label>
+                    <select id="from-token">
+                        <option value="eth">ETH</option>
+                        <option value="btc">BTC</option>
+                        <option value="usdt">USDT</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="from-amount">Amount</label>
+                    <input type="number" id="from-amount" placeholder="0.00">
+                </div>
+                <div class="input-group">
+                    <label for="to-token">To</label>
+                    <select id="to-token">
+                        <option value="eth">ETH</option>
+                        <option value="btc">BTC</option>
+                        <option value="usdt">USDT</option>                            
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="to-amount">Amount</label>
+                    <input type="number" id="to-amount" placeholder="0.00">
+                </div>
+                <button class="swap-button">Swap</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
