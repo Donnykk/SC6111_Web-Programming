@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Meta Swap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
     <div class="sidebar">
         <div class="logo">
-            <img src="./portfolio.svg" style="width: 100%; height:auto;">
+            <img src="portfolio.svg" style="width: 100%; height:auto;" />
         </div>
         <ul class="menu">
             <li><a href="https://portfolio.metamask.io/">Overview</a></li>
@@ -24,38 +28,89 @@
     <div class="main">
         <div class="top_bar">
             <h1>Swap</h1>
-            <input >
+            <div class="button_group">
+                <input type="search" id="search_box" placeholder="Search for a token ...">
+
+                <button type="button" id="gas_button" onclick="open_gas_popup(this)">button1</button>
+                <div id="gas_popup">
+                    <div>
+                        <div>Real-time gas prices</div>
+                    </div>
+                    <div>
+                        <select class="dropdown" name="options">
+                            <option value="option1">Ethereum</option>
+                            <option value="option2">Optimism</option>
+                            <option value="option3">Cronos</option>
+                            <option value="option4">BNB Chain</option>
+                            <option value="option5">Polygon</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div style="font-size: small;">Base fee: 0.88 GWEI</div>
+                    </div>
+                    <button type="button" id="gas_close_button" onclick="close_gas_popup()">close</button>
+                </div>
+
+                <button type="button" id="note_button" onclick="open_note_popup(this)">button2</button>
+                <div id="note_popup">
+                    <button type="button" id="note_close_button" onclick="close_note_popup()">close</button>
+                </div>
+            </div>
         </div>
         <div class="content">
             <div class="swap-container">
-                <h2>Crypto Swap</h2>
-                <div class="input-group">
-                    <label for="from-token">From</label>
-                    <select id="from-token">
-                        <option value="eth">ETH</option>
-                        <option value="btc">BTC</option>
-                        <option value="usdt">USDT</option>
+                <div>
+                    <select class="dropdown" name="options">
+                        <option value="option1">Ethereum</option>
+                        <option value="option2">Optimism</option>
+                        <option value="option3">Cronos</option>
+                        <option value="option4">BNB Chain</option>
+                        <option value="option5">Polygon</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label for="from-amount">Amount</label>
-                    <input type="number" id="from-amount" placeholder="0.00">
+
+                <div style="font-size: medium; margin-top:20px;">Swap From</div>
+                <div class="group1">
+                    <select class="dropdown1">
+                        <option value="option1">ETH</option>
+                    </select>
+                    <input class="input1" placeholder="0" />
                 </div>
-                <div class="input-group">
-                    <label for="to-token">To</label>
-                    <select id="to-token">
-                        <option value="eth">ETH</option>
-                        <option value="btc">BTC</option>
-                        <option value="usdt">USDT</option>                            
+
+                <div style="font-size: medium; margin-top:20px;">Swap To</div>
+                <div>
+                    <select class="dropdown2">
+                        <option value="option1">ETH</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label for="to-amount">Amount</label>
-                    <input type="number" id="to-amount" placeholder="0.00">
-                </div>
-                <button class="swap-button">Swap</button>
             </div>
         </div>
     </div>
 </body>
+
+<script>
+    function open_gas_popup(button) {
+        const rect = button.getBoundingClientRect();
+        const popup = document.getElementById('gas_popup');
+        popup.style.display = 'block';
+        popup.style.top = rect.bottom + 'px';
+        popup.style.left = rect.left + 'px';
+    }
+
+    function close_gas_popup() {
+        document.getElementById('gas_popup').style.display = 'none';
+    }
+    function open_note_popup(button) {
+        const rect = button.getBoundingClientRect();
+        const popup = document.getElementById('note_popup');
+        popup.style.display = 'block';
+        popup.style.top = rect.bottom + 'px';
+        popup.style.left = rect.left + 'px';
+    }
+
+    function close_note_popup() {
+        document.getElementById('note_popup').style.display = 'none';
+    }
+</script>
+
 </html>
