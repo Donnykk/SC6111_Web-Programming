@@ -1,4 +1,4 @@
-# Assigntment of lecture SC6111
+# Assigntment1 of lecture SC6111
 
 Implement a page like https://portfolio.metamask.io/swap
 
