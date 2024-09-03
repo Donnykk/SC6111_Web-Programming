@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from tkinter import messagebox
 import mariadb
 import os
 
@@ -7,73 +8,82 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 
-def Connect_DB():
-    return mariadb.connect(
-        user='root',
-        password='tpc12351744',
-        host='localhost',
-        database='USER_SYSTEM'
+def get_db_connection():
+    conn = mariadb.connect(
+        user="root",
+        password="tpc12351744",
+        host="localhost",
+        database="USER_SYSTEM"
     )
+    return conn
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        password_hash = generate_password_hash(password)
+    username = request.form['username']
+    password = generate_password_hash(request.form['password'])
 
-        conn = Connect_DB()
-        cursor = conn.cursor()
-        try:
-            cursor.execute('INSERT INTO users (username, password_hash) VALUES (?, ?)',
-                           (username, password_hash))
-            conn.commit()
-        except mariadb.IntegrityError:
-            return "Username already exists", 400
-        finally:
-            cursor.close()
-            conn.close()
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
-        return redirect(url_for('login'))
-
-    return render_template('register.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        conn = Connect_DB()
-        cursor = conn.cursor()
+    try:
         cursor.execute(
-            'SELECT id, password_hash FROM users WHERE username = ?', (username,))
-        user = cursor.fetchone()
+            "INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, password))
+        conn.commit()
+    except mariadb.IntegrityError:
+        return "Username already exists", 400
+    finally:
         cursor.close()
         conn.close()
 
-        if user and check_password_hash(user[1], password):
+    return redirect(url_for('index'))
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT id, password_hash FROM users WHERE username = ?", (username,))
+    user = cursor.fetchone()
+
+    if user:
+        if check_password_hash(user[1], password):
             session['user_id'] = user[0]
+            if 'remember_me' in request.form:
+                session.permanent = True
+            else:
+                session.permanent = False
             return redirect(url_for('dashboard'))
         else:
-            return "Invalid credentials", 400
-
-    return render_template('login.html')
+            messagebox.showwarning("", "Wrong Password")
+            return redirect(url_for('index'))
+    else:
+        messagebox.showwarning("", "Invalid Username")
+        return redirect(url_for('index'))
 
 
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' in session:
-        return f"Logged in as user {session['user_id']}"
-    return redirect(url_for('login'))
+        return render_template('dashboard.html')
+    else:
+        return redirect(url_for('index'))
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
