@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trade</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/klinecharts/dist/klinecharts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+      .ob_button {
+        margin-right: 0;
+        font-size: x-large;
+        border-color: black;
+        background-color: black;
+        color: white;
+      }
+      
+      .order_table {
+        width: 100%;
+        border: 1px solid grey;
+        background-color: black;
+        color: white;
+      }
+      
+      .order_tr {
+        width: 100%;
+        padding: 4px;
+      }
+      
+      .th1 {
+        text-align: left;
+        padding: 4px;
+      }
+      
+      .th2 {
+        text-align: center;
+        padding: 4px;
+      }
+      
+      .th3 {
+        text-align: end;
+        padding: 4px;
+      }
+      
+      .td1 {
+        color: red;
+        text-align: left;
+        padding: 4px;
+      }
+      
+      .td2 {
+        color: green;
+        text-align: left;
+        padding: 4px;
+      }
+      
+      .td3 {
+        text-align: center;
+        padding: 4px;
+      }
+      
+      .td4 {
+        text-align: end;
+        padding: 4px;
+      }
+      
+      .history_table {
+        width: 100%;
+        border: 1px solid grey;
+        background-color: black;
+        color: white;
+      }
+      
+      .history_tr {
+        width: 100%;
+        padding: 4px;
+      }
+      
+      #operation-box {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        /* background-color: aliceblue; */
+        /* width: 800px; */
+      }
+      
+      .trade-box {
+        margin: 20px;
+      }
+      
+      .input-group {
+        margin: 15px 0;
+      }
+      
+      .total {
+        display: flex;
+        justify-content: space-between;
+        margin: 40px 0 6px 0;
+      }
+      
+      .btn {
+        width: 100%;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid" style="height: 100vh; background-color: black; color: white;">
+      <div class="row" style="border-bottom: 1px solid grey;">
+        <div class="col-2">
+          <div class="row">
+            <div class="col-6" style="font-size: xx-large; padding-top: 10px; padding-left: 30px;">BTC/USDT</div>
+            <a class="col-6" style="font-size: medium; padding: 30px; color: grey;" href="https://www.binance.com/en/price/bitcoin">Bitcoin Price</a>
+          </div>
+          <div class="row"></div>
+        </div>
+        <div class="col-1">
+          <div class="row" style="font-size: medium; padding: 10px; padding-bottom: 0;color: grey;">24h Change</div>
+          <div class="row" style="font-size: medium; padding: 10px; padding-top: 0; color: green;">699.00+1.24%</div>
+        </div>
+        <div class="col-1">
+          <div class="row" style="font-size: medium; padding: 10px; padding-bottom: 0;color: grey;">24h High</div>
+          <div class="row" style="font-size: medium; padding: 10px; padding-top: 0; color: white;">58,519.00</div>
+        </div>
+        <div class="col-1">
+          <div class="row" style="font-size: medium; padding: 10px; padding-bottom: 0;color: grey;">24h Low</div>
+          <div class="row" style="font-size: medium; padding: 10px; padding-top: 0; color: white;">56,187.61</div>
+        </div>
+        <div class="col-1">
+          <div class="row" style="font-size: medium; padding: 10px; padding-bottom: 0;color: grey;">24h Volume(BTC)</div>
+          <div class="row" style="font-size: medium; padding: 10px; padding-top: 0; color: white;">28,399.11</div>
+        </div>
+        <div class="col-2">
+          <div class="row" style="font-size: medium; padding: 10px; padding-bottom: 0;color: grey;">24h Volume(USDT)</div>
+          <div class="row" style="font-size: medium; padding: 10px; padding-top: 0; color: white;">1,629,009,435.35</div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Left Bar -->
+        <div class="col-3" style="padding: 1%;">
+          <div class="row" style="padding: 1%;">
+            <div class="col-6" style="font-size: x-large;">Order Book</div>
+            <div class="col-6" style="margin-right: 0; padding: 0; text-align: end;">
+              <button type="button" class="ob_button" onclick="">···</button>
+            </div>
+          </div>
+          <table class="order_table" id="table_up">
+            <thead style="border: 1px solid grey;">
+              <tr class="order_tr">
+                <th class="th1">Price(USDT)</th>
+                <th class="th2">Amount(BTC)</th>
+                <th class="th3">Total</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <table class="order_table" id="table_down">
+            <thead style="border: 1px solid grey;"></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Mid Chart -->
+        <div class="col-6">
+          <!-- <div class="container col-7" style="height: 600px;" id="chart"></div> -->
+          <!-- k-line -->
+          <div id="klinechart" style="margin:auto; width: 100%; height: 500px;"></div>
+
+          <!-- trading operation -->
+          <div id="operation-box">
+            <div class="buy-action trade-box">
+              <form>
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Price</span>
+                  <input type="text" class="form-control" style="text-align: right;" aria-label="Price" aria-describedby="basic-addon1" name="buy-price" />
+                  <span class="input-group-text" id="basic-addon1">USDT</span>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Amount</span>
+                  <input type="text" class="form-control" style="text-align: right;" aria-label="Amount" aria-describedby="basic-addon1" name="buy-amount" />
+                  <span class="input-group-text" id="basic-addon1">BTC</span>
+                </div>
+                <div class="total">
+                  <label for="buy-total">Total:</label> <span id="buy-total"></span>
+                </div>
+                <button id="buy-btn" type="submit" class="btn btn-success">BUY</button>
+              </form>
+            </div>
+
+            <div class="sell-action trade-box">
+              <form>
+                <div class="input-group">
+                  <span class="input-group-text">Price</span>
+                  <input type="text" class="form-control" style="text-align: right;" aria-label="Price" aria-describedby="basic-addon1" name="sell-price" />
+                  <span class="input-group-text" id="basic-addon1">USDT</span>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Amount</span>
+                  <input type="text" class="form-control" style="text-align: right;" aria-label="Amount" aria-describedby="basic-addon1" name="sell-amount" />
+                  <span class="input-group-text" id="basic-addon1">BTC</span>
+                </div>
+                <div class="total">
+                  <label for="sell-total">Total:</label> <span id="sell-total"></span>
+                </div>
+                <button id="sell-btn" type="submit" class="btn btn-danger">SELL</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Bar -->
+        <div class="col-3" style="padding: 1%;">
+          <div class="row" style="padding: 1%;">
+            <div class="col-12" style="font-size: x-large;">Trade History</div>
+          </div>
+          <table class="history_table" id="table_ht">
+            <thead style="border: 1px solid grey;">
+              <tr class="history_tr">
+                <th class="th1">Price(USDT)</th>
+                <th class="th2">Amount(BTC)</th>
+                <th class="th3">Time</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script>
+      // 交易数据获取与列表渲染
+      async function fetchData() {
+        try {
+          const odd_response = await fetch('/api/odd')
+          const buy_response = await fetch('/api/buy-orders')
+          const sell_response = await fetch('/api/sell-orders')
+          const history_response = await fetch('/api/trade-history')
+      
+          const odd = await odd_response.json()
+          const buy_orders = await buy_response.json()
+          const sell_orders = await sell_response.json()
+          const trade_history = await history_response.json()
+      
+          const table_up = document.querySelector('#table_up tbody')
+          const table_down = document.querySelector('#table_down tbody')
+          const odd_row = document.querySelector('#table_down thead')
+          const table_ht = document.querySelector('#table_ht tbody')
+      
+          odd.forEach((item) => {
+            odd_row.innerHTML = `<tr class="order_tr"><th class="th1">${item.odd}</th><th class="th2"></th><th class="th3"></th></tr>`
+          })
+      
+          sell_orders.forEach((item) => {
+            const row = document.createElement('tr')
+            row.innerHTML = `<td class="td1">${item.price}</td><td class="td3">${item.amount}</td><td class="td4">${item.total}</td>`
+            table_up.appendChild(row)
+          })
+      
+          buy_orders.forEach((item) => {
+            const row = document.createElement('tr')
+            row.innerHTML = `<td class="td2">${item.price}</td><td class="td3">${item.amount}</td><td class="td4">${item.total}</td>`
+            table_down.appendChild(row)
+          })
+      
+          trade_history.forEach((item) => {
+            const row = document.createElement('tr')
+            if (item.type == 'buy') {
+              row.innerHTML = `<td class="td2">${item.price}</td><td class="td3">${item.amount}</td><td class="td4">${item.time}</td>`
+            } else if (item.type == 'sell') {
+              row.innerHTML = `<td class="td1">${item.price}</td><td class="td3">${item.amount}</td><td class="td4">${item.time}</td>`
+            }
+            table_ht.appendChild(row)
+          })
+          console.log('Fetch!')
+        } catch (error) {
+          console.error('Error fetching data:', error)
+        }
+      }
+      document.addEventListener('DOMContentLoaded', fetchData)
+      
+      // 提交交易表单并获取最新列表
+      async function submitAndFetchData(price, amount, type) {
+        // 定义 POST 请求的数据
+        const postData = {
+          price: price,
+          amount: amount,
+          type: type
+        }
+        // console.log(postData)
+      
+        try {
+          // 发起 POST 请求
+          const postResponse = await fetch('/api/trade', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+          })
+      
+          // 检查 POST 请求的响应状态
+          if (!postResponse.ok) {
+            throw new Error('POST request failed')
+          }
+      
+          // 在 POST 请求成功后发起 GET 请求
+          await fetchData()
+        } catch (error) {
+          console.error('Error:', error)
+        }
+      }
+      
+      // 计算买/卖总价
+      function calTotal() {
+        var buyPrice = parseFloat($("[name = 'buy-price']").val()).toFixed(2)
+        var buyAmount = parseFloat($("[name = 'buy-amount']").val()).toFixed(2)
+      
+        var sellPrice = parseFloat($("[name = 'sell-price']").val()).toFixed(2)
+        var sellAmount = parseFloat($("[name = 'sell-amount']").val()).toFixed(2)
+      
+        var buyTotal = buyPrice * buyAmount
+        var sellTotal = sellPrice * sellAmount
+      
+        if (!buyTotal || buyTotal <= 0) {
+          $('#buy-total').text('Invalid data')
+        } else {
+          $('#buy-total').text(buyTotal.toFixed(2))
+        }
+        if (!sellTotal || sellTotal <= 0) {
+          $('#sell-total').text('Invalid data')
+        } else {
+          $('#sell-total').text(sellTotal.toFixed(2))
+        }
+      }
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        // 获取K线数据
+        $.getJSON('../static/data.json', function (data) {
+          // 初始化KlineChart
+          const chart = new klinecharts.init('klinechart')
+      
+          // 将K线数据加载到图表中
+          chart.applyNewData(data)
+        })
+      })
+      
+      $(document).ready(function () {
+        $('[name="buy-price"]').val()
+        $('[name="buy-amount"]').val()
+      
+        $('[name="sell-price"]').val()
+        $('[name="sell-amount"]').val()
+      
+        calTotal()
+      
+        $("[name = 'buy-price'],[name = 'buy-amount'],[name = 'sell-price'],[name = 'sell-amount']").change(function () {
+          calTotal()
+        })
+      
+        // 买单提交
+        $('#buy-btn').click(function (e) {
+          e.preventDefault()
+          var buyPrice = parseFloat($("[name = 'buy-price']").val()).toFixed(2)
+          var buyAmount = parseFloat($("[name = 'buy-amount']").val()).toFixed(2)
+          var type = 'buy'
+          var buyTotal = $('#buy-total').text()
+      
+          if (buyAmount <= 0 || buyPrice <= 0 || buyTotal == 'Invalid data') {
+            alert('This trade is unavailable')
+            return
+          }
+          submitAndFetchData(buyPrice, buyAmount, type)
+        })
+      
+        // 卖单提交
+        $('#sell-btn').click(function (e) {
+          e.preventDefault()
+          var sellPrice = parseFloat($("[name = 'sell-price']").val()).toFixed(2)
+          var sellAmount = parseFloat($("[name = 'sell-amount']").val()).toFixed(2)
+          var type = 'sell'
+          var sellTotal = $('#sell-total').text()
+      
+          if (sellAmount <= 0 || sellPrice <= 0 || sellTotal == 'Invalid data') {
+            alert('This trade is unavailable')
+            return
+          }
+          submitAndFetchData(sellPrice, sellAmount, type)
+          location.reload()
+        })
+      })
+    </script>
+  </body>
+</html>
